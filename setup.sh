@@ -14,6 +14,10 @@ if [ ! -f "$APP_DIR/artisan" ]; then
         cp "$APP_DIR/.env.example" "$APP_DIR/.env"
         php "$APP_DIR/artisan" key:generate
     fi
+    composer require ronasit/laravel-helpers
+    composer require ronasit/laravel-swagger
+    composer require ronasit/laravel-entity-generator --dev
+    composer require ronasit/laravel-project-initializator --dev
     chmod -R 777 storage
     chmod 777 database/database.sqlite
 fi
