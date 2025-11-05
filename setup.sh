@@ -41,5 +41,5 @@ chmod +x "$ENTRYPOINT_FILE"
 
 echo "Setup complete!"
 
-rm -f ./setup-git-remote.sh
+rm -f "$APP_DIR/setup-git-remote.sh"
 rm -- "$(realpath "$0")"
