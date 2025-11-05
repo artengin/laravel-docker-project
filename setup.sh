@@ -5,7 +5,7 @@ APP_DIR="/app"
 
 if [ ! -f "$APP_DIR/artisan" ]; then
     TEMP_DIR="$APP_DIR/laravel_temp"
-    composer create-project laravel/laravel "$TEMP_DIR"
+    composer create-project laravel/laravel "$TEMP_DIR" --prefer-dist
 
     cp -r "$TEMP_DIR"/. "$APP_DIR"/
     rm -rf "$TEMP_DIR"
@@ -14,9 +14,6 @@ if [ ! -f "$APP_DIR/artisan" ]; then
         cp "$APP_DIR/.env.example" "$APP_DIR/.env"
         php "$APP_DIR/artisan" key:generate
     fi
-    composer require ronasit/laravel-helpers
-    composer require ronasit/laravel-swagger
-    composer require ronasit/laravel-entity-generator --dev
     composer require ronasit/laravel-project-initializator --dev
     chmod -R 777 storage
     chmod 777 database/database.sqlite
