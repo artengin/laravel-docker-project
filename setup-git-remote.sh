@@ -13,7 +13,7 @@ git remote get-url origin &>/dev/null && git remote remove origin
 
 while true; do
     echo
-    read -rp "Enter SSH Git repository URL: " repo_url
+    read -rp "Enter the SSH Git repository URL of the project: " repo_url
 
     if ! is_valid_ssh_url "$repo_url"; then
         echo "Invalid SSH URL. Example: git@github.com:user/repo.git"

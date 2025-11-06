@@ -17,6 +17,10 @@ if [ ! -f "$APP_DIR/artisan" ]; then
     composer require ronasit/laravel-project-initializator --dev
     chmod -R 777 storage
     chmod 777 database/database.sqlite
+
+    read -p "Set project name: " PROJECT_NAME
+
+    php "$APP_DIR/artisan" init "$PROJECT_NAME"
 fi
 
 
