@@ -14,15 +14,16 @@ if [ ! -f "$APP_DIR/artisan" ]; then
         cp "$APP_DIR/.env.example" "$APP_DIR/.env"
         php "$APP_DIR/artisan" key:generate
     fi
-    composer require ronasit/laravel-project-initializator --dev
     chmod -R 777 storage
     chmod 777 database/database.sqlite
+    composer require ronasit/laravel-project-initializator:dev-main --dev
 
-    read -p "Set project name: " PROJECT_NAME
+    echo
+    read -p $'\033[32mSet project name:\033[0m ' PROJECT_NAME
 
     php "$APP_DIR/artisan" init "$PROJECT_NAME"
+    php "$APP_DIR/artisan" migrate
 fi
-
 
 ENTRYPOINT_FILE="$APP_DIR/docker/entrypoint.sh"
 cat > "$ENTRYPOINT_FILE" <<'EOF'
