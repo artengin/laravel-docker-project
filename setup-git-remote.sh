@@ -11,6 +11,11 @@ is_repo_accessible() {
 
 git remote get-url origin &>/dev/null && git remote remove origin
 
+new_commit=$(git commit-tree HEAD^{tree} -m "chore: initial commit")
+git reset --soft "$new_commit"
+
+git commit --amend -m "chore: initial commit"
+
 while true; do
     echo
     read -rp "Enter the SSH Git repository URL of the project: " repo_url
