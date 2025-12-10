@@ -1,4 +1,3 @@
-#### Project is ready for development!
 # Laravel Dockerized Starter
 
 A minimal Laravel environment fully containerized with Docker, ready for development.
