@@ -12,8 +12,8 @@ A minimal Laravel environment fully containerized with Docker, ready for develop
 Option 1. Download via `curl`:
 ```bash
 curl -L -o create-project.zip https://github.com/artengin/laravel-docker-project/archive/refs/heads/main.zip &&
-unzip create-project.zip &&
-rm create-project.zip &&
+unzip main.zip &&
+rm main.zip &&
 cd laravel-docker-project-main
 ```
 
