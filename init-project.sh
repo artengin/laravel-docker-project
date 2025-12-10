@@ -17,9 +17,6 @@ if [ ! -f "$APP_DIR/artisan" ]; then
     chmod -R 777 storage
     chmod 777 database/database.sqlite
 
-    echo
-    read -p $'\033[32mSet project name:\033[0m ' PROJECT_NAME
-
     php "$APP_DIR/artisan" migrate
 fi
 
