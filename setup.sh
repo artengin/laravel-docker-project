@@ -1,50 +1,53 @@
 #!/bin/bash
 set -e
 
-APP_DIR="/app"
+if command -v git &>/dev/null && git rev-parse --is-inside-work-tree &>/dev/null; then
+    git remote get-url origin &>/dev/null && git remote remove origin
 
-if [ ! -f "$APP_DIR/artisan" ]; then
-    TEMP_DIR="$APP_DIR/laravel_temp"
-    composer create-project laravel/laravel "$TEMP_DIR" --prefer-dist
+    new_commit=$(git commit-tree HEAD^{tree} -m "chore: initial commit")
+    git reset --soft "$new_commit"
 
-    cp -r "$TEMP_DIR"/. "$APP_DIR"/
-    rm -rf "$TEMP_DIR"
+    git commit --amend -m "chore: initial commit" &>/dev/null
 
-    if [ ! -f "$APP_DIR/.env" ]; then
-        cp "$APP_DIR/.env.example" "$APP_DIR/.env"
-        php "$APP_DIR/artisan" key:generate
+    read -rp "Do you want to add a remote Git repository? [Y/N]: " add_remote
+    add_remote=${add_remote,,}
+
+    if [[ "$add_remote" == "y" || "$add_remote" == "yes" ]]; then
+        is_valid_ssh_url() {
+            [[ "$1" =~ ^git@[^:]+:[^/]+/.+\.git$ ]]
+        }
+
+        is_repo_accessible() {
+            git ls-remote "$1" &>/dev/null
+        }
+
+        while true; do
+            echo
+            read -rp "Enter the SSH Git repository URL of the project: " repo_url
+
+            if ! is_valid_ssh_url "$repo_url"; then
+                echo "Invalid SSH URL. Example: git@github.com:user/repo.git"
+                continue
+            fi
+
+            if ! is_repo_accessible "$repo_url"; then
+                echo "Cannot access repository at '$repo_url'. Check URL or SSH keys."
+                continue
+            fi
+
+            git remote add origin "$repo_url"
+            echo "Added new remote 'origin' $repo_url"
+            break
+        done
     fi
-    chmod -R 777 storage
-    chmod 777 database/database.sqlite
-    composer require ronasit/laravel-project-initializator --dev
-
-    echo
-    read -p $'\033[32mSet project name:\033[0m ' PROJECT_NAME
-
-    php "$APP_DIR/artisan" init "$PROJECT_NAME"
-    php "$APP_DIR/artisan" migrate
 fi
 
-ENTRYPOINT_FILE="$APP_DIR/docker/entrypoint.sh"
-cat > "$ENTRYPOINT_FILE" <<'EOF'
-#!/bin/bash
-composer install
-
-if [[ -f .env ]]; then
-  echo ".env already exists"
+if command -v docker &>/dev/null; then
+    docker compose up -d
+    docker compose exec -it nginx bash /app/init-project.sh
 else
-  cp .env.example .env
-  php artisan key:generate
-  php artisan jwt:secret
+    echo "Error: Docker is not installed. Cannot start containers."
+    exit 1
 fi
 
-php artisan migrate --force
-chmod -R 777 storage
-EOF
-
-chmod +x "$ENTRYPOINT_FILE"
-
-echo "Setup complete!"
-
-rm -f "$APP_DIR/setup-git-remote.sh"
-rm -- "$(realpath "$0")"
+rm -- "$(realpath "${BASH_SOURCE[0]}")"

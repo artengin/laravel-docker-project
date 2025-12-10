@@ -1,21 +1,34 @@
-# Laravel Docker Project
+#### Project is ready for development!
+# Laravel Dockerized Starter
 
-Minimal Laravel environment fully containerized with Docker.
+A minimal Laravel environment fully containerized with Docker, ready for development.
 
-## Start
+## Requirements
+- Docker
 
+## Quick Start
+
+### Download the repository using `curl` or `git`:
+
+Option 1. Download via `curl`:
 ```bash
-# Clone the repository and enter the folder
-git clone git@github.com:artengin/laravel-docker-project.git NEW-PROJECT-NAME && cd NEW-PROJECT-NAME
-
-# Setup Git remote
-./setup-git-remote.sh
-
-# Start Docker containers
-docker compose up -d
-
-# Run app setup
-docker compose exec -it nginx bash /app/setup.sh
+curl -L -o create-project.zip https://github.com/artengin/laravel-docker-project/archive/refs/heads/main.zip &&
+unzip create-project.zip &&
+rm create-project.zip &&
+cd laravel-project-create-main
 ```
 
-#### Project is ready for development!
+Option 2. Clone via `git`:
+```bash
+git clone git@github.com:artengin/laravel-docker-project.git NEW-PROJECT-NAME && cd NEW-PROJECT-NAME
+```
+
+### Setup and Initialize Project
+
+Before running, make sure you don’t have other Docker containers running.
+
+```bash
+./setup.sh
+```
+
+### Laravel project is ready for development!
