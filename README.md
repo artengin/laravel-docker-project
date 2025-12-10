@@ -14,7 +14,7 @@ Option 1. Download via `curl`:
 curl -L -o create-project.zip https://github.com/artengin/laravel-docker-project/archive/refs/heads/main.zip &&
 unzip create-project.zip &&
 rm create-project.zip &&
-cd laravel-project-create-main
+cd laravel-docker-project-main
 ```
 
 Option 2. Clone via `git`:
